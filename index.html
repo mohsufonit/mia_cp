@@ -2696,7 +2696,7 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
 /* the store-finder's faint grid ground, shared by every tinted break (same 34px pink lines, fading in from the right) */
 .cedit::before,.spotlight--fiora::before,.dzone--festive::after,.rseo__row--tint::before{
   content:"";display:block;position:absolute;inset:0;width:auto;height:auto;transform:none;filter:none;
-  z-index:0;pointer-events:none;opacity:0.9;border-radius:inherit;background-size:auto;
+  z-index:0;pointer-events:none;opacity:0.63;border-radius:inherit;background-size:auto;
   background-image:
     repeating-linear-gradient(0deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px),
     repeating-linear-gradient(90deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px);
@@ -2704,6 +2704,49 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
   mask-image:linear-gradient(100deg,transparent 30%,#000 100%);
 }
 .cedit__inner{position:relative;z-index:1}
+/* page-2 breaks (Karatage, Visit the store, Complete the set, category row) join the same family;
+   only the gifting banner keeps its stronger pink */
+.storev::before,.gnav::before,.pairs--duo::before{
+  content:"";display:block;position:absolute;inset:0;width:auto;height:auto;transform:none;filter:none;
+  z-index:0;pointer-events:none;opacity:0.63;border-radius:inherit;background-size:auto;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px);
+  -webkit-mask-image:linear-gradient(100deg,transparent 30%,#000 100%);
+  mask-image:linear-gradient(100deg,transparent 30%,#000 100%);
+}
+.gnav,.gnav.gnav--jewel,.storev,.pairs,.pairs--duo{background:var(--tint-break);border:1px solid rgba(186,58,80,0.14);color:var(--ink)}
+.gnav{position:relative;overflow:hidden}
+.gnav>*,.pairs--duo>*{position:relative;z-index:1}
+/* karatage row: dark text, white tiles */
+.gnav.gnav--jewel .gnav__title{color:var(--ink)}
+.gnav.gnav--jewel .gnav__sub{color:var(--muted)}
+.gnav.gnav--jewel .gnav__link{color:var(--gold-deep);border-color:rgba(186,58,80,0.4)}
+.gnav.gnav--jewel .gnav__link:hover{color:var(--cta);border-color:var(--cta)}
+.gnav.gnav--jewel .gnav__tile{background:#fff;border-color:rgba(186,58,80,0.18);color:var(--ink);box-shadow:0 10px 24px -16px rgba(186,58,80,0.5)}
+.gnav.gnav--jewel .gnav__tile:hover{background:var(--blush);border-color:var(--cta);color:var(--gold-deep)}
+.gnav.gnav--jewel .gnav__tile b{color:var(--ink)}
+.gnav.gnav--jewel .gnav__tile:hover b{color:var(--gold-deep)}
+.gnav.gnav--jewel .gnav__tile span{color:var(--muted)}
+.gnav.gnav--jewel .gnav__tile:hover span{color:var(--muted)}
+/* visit-the-store: dark text, white fields, primary pink button */
+.storev__s,.storev__fine,.storev__pts li{color:var(--muted)}
+.storev__pts b{color:var(--ink)}
+.storev__in{background:#fff;border-color:var(--line-2);color:var(--ink)}
+.storev__in::placeholder{color:var(--muted-2)}
+.storev__in:focus{border-color:var(--cta);background:#fff}
+.storev__go{background:var(--cta);color:#fff}
+.storev__go:hover{background:var(--cta-hover);box-shadow:0 10px 24px -12px rgba(186,58,80,0.6)}
+.storev__out{color:var(--gold-deep)}
+.storev__out--warn{color:#B3261E}
+.storev__fine a{color:var(--gold-deep)}
+/* store locator joins the family: same tint, same grid strength */
+.pinchk{background:var(--tint-break);border-color:rgba(186,58,80,0.14)}
+.pinchk__stat{color:var(--muted)}
+.pinchk::before{opacity:0.63;background-image:
+    repeating-linear-gradient(0deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px);
+  -webkit-mask-image:linear-gradient(100deg,transparent 30%,#000 100%);mask-image:linear-gradient(100deg,transparent 30%,#000 100%)}
 .rseo__row--tint{position:relative}
 .rseo__row--tint>.rseo__main{position:relative;z-index:1}
 .rseo__row--tint>.rseo__side{z-index:1}
