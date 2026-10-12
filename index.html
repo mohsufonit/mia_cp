@@ -603,7 +603,8 @@ h1,h2,h3,h4,h5{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,san
 .grid-section{padding:24px 0 80px}
 :root{
   --grid-row-gap:32px;
-  --break-edge:10px;
+  --break-edge:var(--grid-row-gap);   /* a break clears the rows by exactly one row-gap, above and below */
+  --tint-break:linear-gradient(135deg,#FBE4E7 0%,#F6D2D8 55%,#F0C0C8 100%);  /* a step deeper than the Recently-viewed wash */
   /* grid row-gap already sits between a break and the rows either side, so the
      margin subtracts it down to the 10px we actually want to see */
   --break-gap:calc(var(--break-edge) - var(--grid-row-gap));
@@ -618,7 +619,7 @@ h1,h2,h3,h4,h5{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,san
 }
 @media (max-width:1080px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:780px){
-  :root{--grid-row-gap:28px;--break-edge:24px}
+  :root{--grid-row-gap:28px}
   .grid{grid-template-columns:repeat(2,1fr);gap:var(--grid-row-gap) 12px;padding:0 20px}
 }
 
@@ -1543,12 +1544,13 @@ h1,h2,h3,h4,h5{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,san
 @media (max-width:780px){.card__rating-pill{left:7px;bottom:7px;padding:4px 8px;font-size:10.5px}}
 
 /* ---- low-stock line, directly above the CTA ---- */
-.card__stock{display:flex;align-items:center;justify-content:center;gap:7px;margin:10px 0 0;min-height:18px;font-size:12px;font-weight:500;color:var(--gold-deep)}
+/* hung under the card (inside the row gap) so a stock note never pushes one button below its neighbour
+   or makes the space under a card larger than the space above a banner */
+.card__stock{display:flex;align-items:center;justify-content:center;gap:7px;position:absolute;left:0;right:0;top:100%;margin:0;padding-top:6px;line-height:1.2;font-size:12px;font-weight:500;color:var(--gold-deep)}
 .card__stock::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
 .card__stock--empty::before{display:none}
 @media (max-width:780px){
-  /* hung under the card (inside the row gap) so it can't push one button lower than its neighbour */
-  .card__stock{font-size:11px;margin:0;min-height:0;position:absolute;left:0;right:0;top:100%;padding-top:4px;line-height:1.2}
+  .card__stock{font-size:11px;padding-top:4px}
   /* an empty stock line still reserved ~26px under every button, which stacked on the row gap */
   .card__stock--empty{display:none}
 }
@@ -2653,6 +2655,79 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
   .filters__nav{display:none}
 }
 @media (min-width:761px){.toolbar{padding-top:18px}}
+
+/* ====== Product-focus breaks on the light tint ======
+   Banners (gifting, festive, store) stay pink so they pop; the sections whose job is to
+   show product (Shop by Metal / Gemstones, the Fiora strip) sit on the light pink and
+   hand the colour to the swatches, tabs and CTAs. */
+.cedit,.cedit.cedit--gem,.spotlight--fiora{background:var(--tint-break);color:var(--ink)}
+.cedit,.cedit.cedit--gem{border:1px solid rgba(186,58,80,0.14)}
+.cedit::before,.spotlight--fiora::before{display:none}
+.cedit__title,.spotlight--fiora .spotlight__title{color:var(--ink)}
+.cedit__sub,.cedit__empty,.spotlight--fiora .spotlight__sub{color:var(--muted)}
+.cedit__label{color:var(--muted)}
+.cedit__tile[aria-selected="true"] .cedit__label{color:var(--gold-deep)}
+.cedit__tile em{background:var(--gold-deep)}
+.cedit .cedit__blob,.cedit.cedit--gem .cedit__blob{outline-color:rgba(186,58,80,0.22)}
+.cedit .cedit__tile[aria-selected="true"] .cedit__blob,.cedit.cedit--gem .cedit__tile[aria-selected="true"] .cedit__blob{outline-color:var(--gold-deep)}
+.cedit__cta{color:var(--gold-deep);border-bottom-color:rgba(186,58,80,0.4)}
+.cedit__cta:hover,.cedit.cedit--gem .cedit__cta:hover{color:var(--cta);border-color:var(--cta)}
+/* title sits on the same centre line as the swatch row beneath it */
+.cedit__inner{align-items:center}
+.cedit__copy{text-align:center;max-width:none}
+.cedit__title{white-space:normal}
+.cedit__prod,.spotlight--fiora .spotlight__card{box-shadow:0 12px 28px -14px rgba(186,58,80,0.38)}
+.spotlight--fiora .spotlight__hdr-cta{background:var(--cta);color:#fff}
+.spotlight--fiora .spotlight__hdr-cta:hover{background:var(--cta-hover)}
+
+/* ====== Ring guide (SEO copy) ====== */
+.rseo{padding:clamp(44px,6vw,80px) 0 clamp(36px,5vw,64px);border-top:1px solid var(--line)}
+.rseo__inner{max-width:var(--max);margin:0 auto;padding:0 16px}
+.rseo__head{max-width:920px;margin:0 auto clamp(28px,4vw,48px);text-align:center}
+.rseo__head .h-section{margin:10px auto 0;max-width:30ch}
+.rseo__intro{margin-top:20px;display:grid;gap:14px;text-align:left}
+.rseo__intro p,.rseo__lead,.rseo__card p,.rseo__whycard p{margin:0;font-size:14px;line-height:1.75;color:var(--muted)}
+.rseo a{color:var(--gold-deep);text-decoration:underline;text-decoration-color:rgba(186,58,80,0.35);text-underline-offset:3px}
+.rseo a:hover{color:var(--cta)}
+.rseo__block{margin-top:clamp(34px,5vw,56px)}
+.rseo__h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:clamp(20px,2.3vw,28px);line-height:1.2;letter-spacing:-0.01em;color:var(--ink);margin:0 0 10px}
+.rseo__lead{max-width:78ch}
+.rseo__lead--after{margin-top:22px}
+.rseo__grid{display:grid;gap:14px;margin-top:22px}
+.rseo__grid--types{grid-template-columns:repeat(6,1fr)}
+.rseo__grid--types .rseo__card{grid-column:span 2}
+.rseo__grid--types .rseo__card:nth-child(4){grid-column:2 / span 2}
+.rseo__grid--types .rseo__card:nth-child(5){grid-column:4 / span 2}
+.rseo__grid--occ{grid-template-columns:repeat(3,1fr)}
+.rseo__card{position:relative;background:var(--paper);border:1px solid var(--line-2);border-radius:16px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:8px}
+.rseo__card--soft{background:linear-gradient(135deg,#FFF7F9 0%,var(--blush) 100%);border-color:rgba(186,58,80,0.16)}
+.rseo__num{font-size:11px;letter-spacing:0.18em;font-weight:600;color:var(--gold-deep)}
+.rseo__card h4,.rseo__whycard h4{margin:0;font-size:16px;font-weight:600;letter-spacing:-0.01em;color:var(--ink)}
+.rseo__more{margin-top:auto;padding-top:6px;font-size:12px;font-weight:600;letter-spacing:0.04em;text-decoration:none!important}
+.rseo__why{margin-top:clamp(34px,5vw,56px);padding:clamp(22px,3vw,36px);border-radius:20px;background:var(--tint-break);border:1px solid rgba(186,58,80,0.14)}
+.rseo__grid--why{grid-template-columns:repeat(3,1fr)}
+.rseo__whycard{display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:14px;background:var(--paper);box-shadow:0 10px 24px -16px rgba(186,58,80,0.5)}
+.rseo__links{margin-top:clamp(34px,5vw,56px);display:grid;grid-template-columns:repeat(2,1fr);gap:22px 40px}
+.rseo__links .rseo__h3{grid-column:1/-1;margin:0}
+.rseo__linkhd{margin:0 0 10px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--muted-2)}
+.rseo__chips{display:flex;flex-wrap:wrap;gap:8px}
+.rseo__chip{display:inline-flex;padding:7px 13px;border:1px solid var(--line-2);border-radius:999px;font-size:12px;color:var(--ink-2)!important;text-decoration:none!important;background:var(--paper);transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease)}
+.rseo__chip:hover{border-color:var(--cta);color:var(--gold-deep)!important;background:var(--blush)}
+@media (max-width:1080px){
+  .rseo__grid--types{grid-template-columns:repeat(2,1fr)}
+  .rseo__grid--types .rseo__card,.rseo__grid--types .rseo__card:nth-child(4){grid-column:auto}
+  .rseo__grid--types .rseo__card:nth-child(5){grid-column:1/-1}
+  .rseo__grid--occ,.rseo__grid--why{grid-template-columns:1fr}
+}
+@media (max-width:780px){
+  .rseo__inner{padding:0 20px}
+  .rseo__head{text-align:left}
+  .rseo__head .h-section{max-width:none}
+  .rseo__grid--types{grid-template-columns:1fr}
+  .rseo__grid--types .rseo__card:nth-child(5){grid-column:auto}
+  .rseo__card{padding:18px}
+  .rseo__links{grid-template-columns:1fr;gap:20px}
+}
 </style>
 </head>
 <body>
@@ -3272,6 +3347,45 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
   </div>
 </section>
 
+<!-- ================= RING GUIDE: SEO copy from the live Mia rings page, laid out as a guide =================
+     All text stays in the DOM (nothing collapsed) so crawlers read it exactly as on the live PLP. -->
+<section class="rseo" id="ring-guide" aria-labelledby="rseo-hdr">
+  <div class="rseo__inner">
+    <header class="rseo__head">
+      <span class="eyebrow">Ring guide</span>
+      <h2 class="h-section" id="rseo-hdr">Finding the Perfect Rings: A Chronicle Dripping in Sparkling Elegance</h2>
+      <div class="rseo__intro">
+        <p>A ring has always been a classic choice among accessories, holding a transcendental value that enraptures the ages. Draped in aesthetic dynamism and symbolic value, rings serve as the perfect gifts for others and the self. They are versatile enough to style with different types of wardrobes and also just the right amount of accentual surprise to fine-tune your “Slays of the Days”.</p>
+        <p>From gold rings to diamond studded bands, a ring is stackable in any form, serving as the perfect muse to build around. So, if you’re looking to shop your new go-to rings or invest in a symbolic representation of your love and appreciation for a partner, we are here to introduce you to some irresistibly sparkling options!</p>
+      </div>
+    </header>
+
+    <div class="rseo__block">
+      <h3 class="rseo__h3">Types of Rings: Choose Your “Knight in Shining Armour”</h3>
+      <p class="rseo__lead">While you can never go wrong with any choice of ring, it’s important to set an intention with your purchase. This way, the rings can pose as reminders of time capsules in your life that you’d want to preserve forever! From <a href="https://www.miabytanishq.com/en_IN/rings/diamond-rings" target="_blank" rel="noopener">diamond rings</a> to gold galore, make your choice mindfully and have your pick drip with an essence of a memory you wish to cherish forever. Here are some trendy ring designs you can explore to find a perfect match for your shining soul:</p>
+      <div class="rseo__grid rseo__grid--types"><article class="rseo__card"><span class="rseo__num">01</span><h4>Plain Gold Ring</h4><p>Do you want to share a cute little matching moment with your partner? If so, opting for couple gold rings is the iconic move, characterised by a cheerful, romantic, movie-like element. Opt for a simple yet heavily symbolic pair of gleaming plain gold <a href="https://www.miabytanishq.com/en_IN/rings/couple-rings" target="_blank" rel="noopener">couple rings</a> that remind you of your unique love story every time you or your partner glance down at them.</p><a class="rseo__more" href="https://www.miabytanishq.com/en_IN/gold-rings" target="_blank" rel="noopener">Shop plain gold rings <span aria-hidden="true">&#8594;</span></a></article><article class="rseo__card"><span class="rseo__num">02</span><h4>Solitaire Ring</h4><p>A <a href="https://www.miabytanishq.com/en_IN/rings/solitaire-rings" target="_blank" rel="noopener">solitaire ring</a> reigns on top of lovers’ inspiration lists for engagement rings! Infused with a great degree of delicate, youthful romantic flavour, the solitaire ring is a timelessly recognised confession of raw and real feelings. Featuring round-cut and heart-cut solitaire diamonds, these rings make a perfect gifting option for an anniversary or birthday.</p><a class="rseo__more" href="https://www.miabytanishq.com/en_IN/rings/solitaire-rings" target="_blank" rel="noopener">Shop solitaire rings <span aria-hidden="true">&#8594;</span></a></article><article class="rseo__card"><span class="rseo__num">03</span><h4>Gold &amp; Diamond Ring</h4><p>Have you just bagged your first salary hike? It’s time to treat yourself to some gold and diamond elegance. Opt for <a href="https://www.miabytanishq.com/en_IN/gold-rings" target="_blank" rel="noopener">gold rings</a> with minimalistic diamond features; designs that shall perfectly align with your everyday wardrobe. Shine from the excitement of growing your career horizons; have the yellow-gold royalty and pristine brilliance complement said radiance!</p><a class="rseo__more" href="https://www.miabytanishq.com/en_IN/rings/gold-and-diamond-rings" target="_blank" rel="noopener">Shop gold &amp; diamond rings <span aria-hidden="true">&#8594;</span></a></article><article class="rseo__card"><span class="rseo__num">04</span><h4>Gemstone Rings</h4><p><a href="https://www.miabytanishq.com/en_IN/rings/gemstone-rings" target="_blank" rel="noopener">Gemstone rings</a> are modern modifications of rings, incorporating an added twist of personhood. Opt for a ring that features a precious gemstone you connect to emotionally or one in a colour that fits your vibe! From a dazzling topaz and a royal sapphire to a gorgeous ruby and a shimmery amethyst, explore away to your heart’s content. Pair them with your monochrome and neutral base outfits and add a pop of surprise to your “corporate-core” #OOTDs!</p><a class="rseo__more" href="https://www.miabytanishq.com/en_IN/rings/gemstone-rings" target="_blank" rel="noopener">Shop gemstone rings <span aria-hidden="true">&#8594;</span></a></article><article class="rseo__card"><span class="rseo__num">05</span><h4>Silver Rings</h4><p><a href="https://www.miabytanishq.com/en_IN/rings/silver-rings" target="_blank" rel="noopener">Silver rings</a> are not only budget-friendly alternatives to gold and diamond rings but also their edgier counterparts. As this silver sheen has been taking the fashion world by storm in the recent decade, such accents have become all the rage. Slay your college #OOTDs with an out-of-the-box, statement-making glaze; become the designated fashionista on campus or in your office!</p><a class="rseo__more" href="https://www.miabytanishq.com/en_IN/rings/silver-rings" target="_blank" rel="noopener">Shop silver rings <span aria-hidden="true">&#8594;</span></a></article></div>
+    </div>
+
+    <div class="rseo__block">
+      <h3 class="rseo__h3">Rings for Every Occasion: Shine with a Sparkle like No Other!</h3>
+      <p class="rseo__lead">Rings are the most preferred choice even among individuals who do not prefer accessorising to the brim, owing to their degree of versatility. By “versatility”, we mean you can literally put on a ring with your sweatpants and still make it work! A few examples of occasions you can slay your new “go-to” ring, and fascinate a room full of aesthetic lovers, include:</p>
+      <div class="rseo__grid rseo__grid--occ"><article class="rseo__card rseo__card--soft"><span class="rseo__num">01</span><h4>Formal Events</h4><p>Formal events require you to dress up in your elevated basics, which mostly come in earthy tones or across beige colour palettes. The perfect gold ring for women shall do the job of infusing interest even to a subtle look. Thus, you can make an alluring entry to remember, while sticking to the theme yet shining your brightest!</p></article><article class="rseo__card rseo__card--soft"><span class="rseo__num">02</span><h4>Friendly Get-togethers</h4><p>Get-togethers with friends are the much-awaited occasions for any working woman as she finally gets to be herself and let loose. It’s the perfect time to rock your gemstone rings and draw a few gasps with your colourful ensembles.</p></article><article class="rseo__card rseo__card--soft"><span class="rseo__num">03</span><h4>Festive Celebrations</h4><p>Festive celebrations call for dramatic #OOTDs and eye-catching glam. Adorn yourself in your ethnic numbers and complement them with the dazzling shimmer of your diamond ring for women, and steal the spotlight’s job!</p></article></div>
+      <p class="rseo__lead rseo__lead--after">Get your hands on the perfect ring that’ll align with the vigour of the above-mentioned occasions and beyond. Accessorising can immediately help “yass-ify” an outfit. If you are a man who has just been introduced to the world of jewellery, a gold ring for men is the perfect place to start your bejewelling journey. Wear the ring singly to elevate your usual formal shirt and tailored trousers combo. Alternatively, make this accessorising moment even more iconic by opting for a diamond ring for men as a show-stopping piece!</p>
+    </div>
+
+    <div class="rseo__why">
+      <h3 class="rseo__h3">Buy Jewellery Online with Mia by Tanishq</h3>
+      <p class="rseo__lead">Associate with a jewellery brand whose mission you believe in. Mia by Tanishq aims to bring its customer base a wide array of sparkling ring options that appeal beyond the strains of time. Here are some reasons why you should identify your shine with Mia by Tanishq:</p>
+      <div class="rseo__grid rseo__grid--why"><article class="rseo__whycard"><h4>Recycled Gold &amp; Sustainability</h4><p>By using recycled gold for our gold rings, we are consciously taking a step towards reducing mining efforts. This way, we can directly play a part in conserving natural resources. With us, you can choose a sustainable lifestyle!</p></article><article class="rseo__whycard"><h4>The Trust of TATA</h4><p>A ‘TATA seal of trust’ is associated with all our jewellery products. They go through strict quality checks before being listed on the official website, so you know you’re investing in a “golden partner for life”!</p></article><article class="rseo__whycard"><h4>Ethical Sourcing of Materials</h4><p>We source our raw materials ethically and thus comply with the set government regulations and consumer wants and expectations.</p></article></div>
+    </div>
+
+    <nav class="rseo__links" aria-label="Popular searches">
+      <h3 class="rseo__h3">Popular searches</h3>
+      <div class="rseo__linkgrp"><h3 class="rseo__linkhd">Popular Searches</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/silver-jewellery" target="_blank" rel="noopener">Silver Jewellery</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/chain" target="_blank" rel="noopener">Gold Chain</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings" target="_blank" rel="noopener">Rings For Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/earrings" target="_blank" rel="noopener">Earrings For Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/chain" target="_blank" rel="noopener">Chains</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings/couple-rings" target="_blank" rel="noopener">Couple Rings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/daily-wear-earrings" target="_blank" rel="noopener">Daily Wear Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings" target="_blank" rel="noopener">Daily Wear Rings</a></div></div><div class="rseo__linkgrp"><h3 class="rseo__linkhd">Gift For Women</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings" target="_blank" rel="noopener">Rings for Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/gold-rings" target="_blank" rel="noopener">Gold Rings for Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/earrings" target="_blank" rel="noopener">Earrings For Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Bracelet For Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/pendants" target="_blank" rel="noopener">Pendants For Women</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/necklace" target="_blank" rel="noopener">Necklace for Women</a></div></div><div class="rseo__linkgrp"><h3 class="rseo__linkhd">Gift For Men</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/rings-for-men" target="_blank" rel="noopener">Rings for Men</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/gold-rings" target="_blank" rel="noopener">Gold Rings for Men</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Bracelet For Men</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/pendants" target="_blank" rel="noopener">Pendants For Men</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/chain" target="_blank" rel="noopener">Chains For Men</a></div></div><div class="rseo__linkgrp"><h3 class="rseo__linkhd">Rings</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/engagement-rings" target="_blank" rel="noopener">Engagement Rings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings/couple-rings" target="_blank" rel="noopener">Couple Ring</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings/wedding-rings" target="_blank" rel="noopener">Wedding Ring</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings" target="_blank" rel="noopener">Promise Ring</a></div></div><div class="rseo__linkgrp"><h3 class="rseo__linkhd">Bangles</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bangles" target="_blank" rel="noopener">Daily Wear Bangles</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bangles" target="_blank" rel="noopener">Bridal Bangles</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bangles" target="_blank" rel="noopener">Traditional Bangles</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Bracelets</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Gold Bracelets</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Evil Eye Bracelets</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Tennis Bracelets</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/bracelets" target="_blank" rel="noopener">Chain Bracelets</a></div></div><div class="rseo__linkgrp"><h3 class="rseo__linkhd">Earrings</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/gold-earrings" target="_blank" rel="noopener">Gold Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/earrings/diamond-earrings" target="_blank" rel="noopener">Diamond Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/hoop-earrings" target="_blank" rel="noopener">Hoop Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/stud-earrings" target="_blank" rel="noopener">Stud Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/earrings/pearl-earrings" target="_blank" rel="noopener">Pearl Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/earrings" target="_blank" rel="noopener">Fancy Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/daily-wear-earrings" target="_blank" rel="noopener">Daily Wear Earrings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/earrings" target="_blank" rel="noopener">Round Earrings</a></div></div><div class="rseo__linkgrp"><h3 class="rseo__linkhd">Explore</h3><div class="rseo__chips"><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/coins" target="_blank" rel="noopener">Gold Coins</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/coins" target="_blank" rel="noopener">Silver Coins</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/gifting-range" target="_blank" rel="noopener">Gifting</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/gifting/price/under-10k" target="_blank" rel="noopener">Gifting Under 10K</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/rings" target="_blank" rel="noopener">Rings</a><a class="rseo__chip" href="https://www.miabytanishq.com/en_IN/shop/necklace" target="_blank" rel="noopener">Necklaces</a></div></div>
+    </nav>
+  </div>
+</section>
+
 <!-- ================= FAQ (merged in) ================= -->
 <section class="faq" id="faq" aria-labelledby="faq-hdr">
   <div class="faq__inner">
@@ -3305,6 +3419,26 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
       <details class="faq__item">
         <summary>Are Mia diamonds certified?<span class="faq__plus"></span></summary>
         <p>All diamonds used in Mia rings are ethically sourced and certified by internationally recognised laboratories (IGI/GIA). Each diamond is graded for the 4Cs — cut, colour, clarity and carat — ensuring you receive a ring of guaranteed quality and authenticity.</p>
+      </details>
+      <details class="faq__item">
+        <summary>Which is the best designer gold ring for women?<span class="faq__plus"></span></summary>
+        <p>Gold and diamond rings are the best designer picks for women. They are timeless in design and easy to style with different types of outfits. You can explore and shop valuable gold and diamond rings with Mia by Tanishq!</p>
+      </details>
+      <details class="faq__item">
+        <summary>Which is the best designer gold ring for men?<span class="faq__plus"></span></summary>
+        <p>A chunky gold band is dubbed as the best designer gold ring for men. Find several options of the same online with Mia by Tanishq. Check out and choose from a range of subtle and minimal styles or bold makes, as per your style.</p>
+      </details>
+      <details class="faq__item">
+        <summary>Where can I find couple rings?<span class="faq__plus"></span></summary>
+        <p>You can find couple rings at Mia by Tanishq. From subtle and simple 22KT, 18KT and 14KT bands to awe-striking diamond numbers, you can pick from a diverse catalogue of sparklies.</p>
+      </details>
+      <details class="faq__item">
+        <summary>Can I personalise a ring?<span class="faq__plus"></span></summary>
+        <p>You can personalise your pick by putting in extra thought behind it while you’re at the shopping stage. Opt for a ring that features a design or motif which signifies you, the person you’re gifting it to or the bond you two share. It can then serve as a personal symbol or reminder of affection!</p>
+      </details>
+      <details class="faq__item">
+        <summary>Can I buy a ring as a gift and have it delivered to them?<span class="faq__plus"></span></summary>
+        <p>Yes, you can place your order for the ring online on the official website of Mia by Tanishq and have it delivered to your preferred address. It shall reach them on the provided delivery date!</p>
       </details>
     </div>
   </div>
