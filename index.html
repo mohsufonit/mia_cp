@@ -2662,7 +2662,6 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
    hand the colour to the swatches, tabs and CTAs. */
 .cedit,.cedit.cedit--gem,.spotlight--fiora{background:var(--tint-break);color:var(--ink)}
 .cedit,.cedit.cedit--gem{border:1px solid rgba(186,58,80,0.14)}
-.cedit::before,.spotlight--fiora::before{display:none}
 .cedit__title,.spotlight--fiora .spotlight__title{color:var(--ink)}
 .cedit__sub,.cedit__empty,.spotlight--fiora .spotlight__sub{color:var(--muted)}
 .cedit__label{color:var(--muted)}
@@ -2685,12 +2684,29 @@ button.pinchk__res:hover{border-color:var(--cta);color:var(--cta);background:#ff
 .spotlight--fiora .spotlight__hdr-cta:hover{background:var(--cta-hover)}
 /* Dhanteras & Diwali break: same light ground, pink lettering and tile edges, no dark ground or gold foil */
 .dzone--festive{background:var(--tint-break);border-color:rgba(186,58,80,0.14);box-shadow:none}
-.dzone--festive::after{display:none}
 .dzone--festive .dzone__hd{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--gold-deep);font-weight:600}
 .dzone--festive .dzone__tile{border-color:rgba(186,58,80,0.18);box-shadow:0 12px 28px -14px rgba(186,58,80,0.38)}
 .dzone--festive .dzone__tile:hover{border-color:rgba(186,58,80,0.45);box-shadow:0 16px 32px -14px rgba(186,58,80,0.5)}
 .dzone--festive .dzone__pill{border-color:rgba(186,58,80,0.4);background:#fff;color:var(--gold-deep)}
 .dzone--festive .dzone__next{background:var(--cta);border-color:transparent;color:#fff}
+/* diya in a white badge with a pink bowl and amber flame, so it reads on the light ground */
+.dzone--festive .dzone__diya{box-sizing:content-box;width:20px;height:20px;padding:7px;margin-right:0;border-radius:50%;background:#fff;box-shadow:0 6px 14px -6px rgba(186,58,80,0.55)}
+.dzone--festive .dzone__diya .bowl{fill:var(--gold-deep)}
+.dzone--festive .dzone__diya .flame{fill:#F59E0B;filter:drop-shadow(0 0 3px rgba(245,158,11,0.7))}
+/* the store-finder's faint grid ground, shared by every tinted break (same 34px pink lines, fading in from the right) */
+.cedit::before,.spotlight--fiora::before,.dzone--festive::after,.rseo__row--tint::before{
+  content:"";display:block;position:absolute;inset:0;width:auto;height:auto;transform:none;filter:none;
+  z-index:0;pointer-events:none;opacity:0.9;border-radius:inherit;background-size:auto;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(186,58,80,0.13) 0 1px, transparent 1px 34px);
+  -webkit-mask-image:linear-gradient(100deg,transparent 30%,#000 100%);
+  mask-image:linear-gradient(100deg,transparent 30%,#000 100%);
+}
+.cedit__inner{position:relative;z-index:1}
+.rseo__row--tint{position:relative}
+.rseo__row--tint>.rseo__main{position:relative;z-index:1}
+.rseo__row--tint>.rseo__side{z-index:1}
 .dzone--festive .dzone__next:hover{background:var(--cta-hover)}
 /* secondary CTA = white with pink text and border (it read as a disabled grey button before); fills pink on hover */
 .rec__cta{background:#fff;color:var(--gold-deep);border-color:var(--cta)}
